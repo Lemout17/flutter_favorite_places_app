@@ -17,8 +17,14 @@ class PlacesItem extends StatelessWidget {
         backgroundImage: FileImage(place.image),
       ),
       title: Text(
-        title,
+        title.substring(0, 1).toUpperCase() + title.substring(1),
         style: theme.textTheme.titleMedium!.copyWith(
+          color: theme.colorScheme.onBackground,
+        ),
+      ),
+      subtitle: Text(
+        place.location.address,
+        style: theme.textTheme.bodySmall!.copyWith(
           color: theme.colorScheme.onBackground,
         ),
       ),

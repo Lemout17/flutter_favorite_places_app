@@ -37,7 +37,8 @@ class _PlacesDetailPageState extends State<PlacesDetailPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          widget.place.title,
+          widget.place.title.substring(0, 1).toUpperCase() +
+              widget.place.title.substring(1),
         ),
       ),
       body: Stack(

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_favorite_places_app/models/place.dart';
 import 'package:flutter_favorite_places_app/providers/user_places.dart';
 import 'package:flutter_favorite_places_app/widgets/image_input.dart';
 import 'package:flutter_favorite_places_app/widgets/location_input.dart';
@@ -16,6 +17,7 @@ class AddPlacePage extends ConsumerStatefulWidget {
 class _AddPlacePageState extends ConsumerState<AddPlacePage> {
   final _titleController = TextEditingController();
   File? _pickedImage;
+  PlaceLocation? _pickedLocation;
 
   @override
   void dispose() {
@@ -47,7 +49,7 @@ class _AddPlacePageState extends ConsumerState<AddPlacePage> {
             const SizedBox(
               height: 10,
             ),
-            const LocationInput(),
+            LocationInput(onPickLocation: onPickLocation),
             const SizedBox(
               height: 16,
             ),
@@ -77,11 +79,16 @@ class _AddPlacePageState extends ConsumerState<AddPlacePage> {
     ref.read(userPlacesProvider.notifier).addPlace(
           enteredTitle,
           _pickedImage!,
+          _pickedLocation!,
         );
     Navigator.of(context).pop();
   }
 
   void onPickImage(File image) {
     _pickedImage = image;
+  }
+
+  void onPickLocation(PlaceLocation location) {
+    _pickedLocation = location;
   }
 }

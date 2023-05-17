@@ -23,6 +23,16 @@ class PlacesDetailPage extends StatelessWidget {
             width: double.infinity,
             height: double.infinity,
           ),
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Text(
+              place.location.address,
+              style: theme.textTheme.bodyLarge!.copyWith(
+                color: theme.colorScheme.onBackground,
+                fontSize: 18,
+              ),
+            ),
+          ),
         ],
       ),
     );

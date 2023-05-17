@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_favorite_places_app/providers/user_places.dart';
 import 'package:flutter_favorite_places_app/widgets/image_input.dart';
+import 'package:flutter_favorite_places_app/widgets/location_input.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AddPlacePage extends ConsumerStatefulWidget {
@@ -43,6 +44,10 @@ class _AddPlacePageState extends ConsumerState<AddPlacePage> {
               height: 10,
             ),
             ImageInput(onPickImage: onPickImage),
+            const SizedBox(
+              height: 10,
+            ),
+            const LocationInput(),
             const SizedBox(
               height: 16,
             ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:location/location.dart';
 
 class LocationInput extends StatefulWidget {
   const LocationInput({super.key});
@@ -8,9 +9,24 @@ class LocationInput extends StatefulWidget {
 }
 
 class _LocationInputState extends State<LocationInput> {
+  Location? _pickedLocation;
+  bool _isGettingLocation = false;
+
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+
+    Widget previewContent = Text(
+      'No location chosen',
+      textAlign: TextAlign.center,
+      style: theme.textTheme.bodyLarge!.copyWith(
+        color: theme.colorScheme.onBackground,
+      ),
+    );
+
+    if (_isGettingLocation) {
+      previewContent = const CircularProgressIndicator();
+    }
 
     return Column(
       children: [
@@ -24,19 +40,13 @@ class _LocationInputState extends State<LocationInput> {
               width: 1,
             ),
           ),
-          child: Text(
-            'No location chosen',
-            textAlign: TextAlign.center,
-            style: theme.textTheme.bodyLarge!.copyWith(
-              color: theme.colorScheme.onBackground,
-            ),
-          ),
+          child: previewContent,
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             TextButton.icon(
-              onPressed: () {},
+              onPressed: _getCurrentLocation,
               icon: const Icon(Icons.location_on),
               label: const Text('Get current location'),
             ),
@@ -49,5 +59,42 @@ class _LocationInputState extends State<LocationInput> {
         ),
       ],
     );
+  }
+
+  Future<void> _getCurrentLocation() async {
+    Location location = Location();
+
+    bool serviceEnabled;
+    PermissionStatus permissionGranted;
+    LocationData locationData;
+
+    serviceEnabled = await location.serviceEnabled();
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
+        return;
+      }
+    }
+
+    permissionGranted = await location.hasPermission();
+    if (permissionGranted == PermissionStatus.denied) {
+      permissionGranted = await location.requestPermission();
+      if (permissionGranted != PermissionStatus.granted) {
+        return;
+      }
+    }
+
+    setState(() {
+      _isGettingLocation = true;
+    });
+
+    locationData = await location.getLocation();
+
+    setState(() {
+      _isGettingLocation = false;
+    });
+
+    print(locationData.latitude);
+    print(locationData.longitude);
   }
 }

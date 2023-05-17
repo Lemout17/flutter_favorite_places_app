@@ -15,13 +15,15 @@ class PlacesDetailPage extends StatelessWidget {
           place.title,
         ),
       ),
-      body: Center(
-        child: Text(
-          place.title,
-          style: theme.textTheme.bodyLarge!.copyWith(
-            color: theme.colorScheme.onBackground,
+      body: Stack(
+        children: [
+          Image.file(
+            place.image,
+            fit: BoxFit.cover,
+            width: double.infinity,
+            height: double.infinity,
           ),
-        ),
+        ],
       ),
     );
   }

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_favorite_places_app/providers/user_places.dart';
 import 'package:flutter_favorite_places_app/widgets/image_input.dart';
@@ -12,6 +14,7 @@ class AddPlacePage extends ConsumerStatefulWidget {
 
 class _AddPlacePageState extends ConsumerState<AddPlacePage> {
   final _titleController = TextEditingController();
+  File? _pickedImage;
 
   @override
   void dispose() {
@@ -39,7 +42,7 @@ class _AddPlacePageState extends ConsumerState<AddPlacePage> {
             const SizedBox(
               height: 10,
             ),
-            const ImageInput(),
+            ImageInput(onPickImage: onPickImage),
             const SizedBox(
               height: 16,
             ),
@@ -57,7 +60,7 @@ class _AddPlacePageState extends ConsumerState<AddPlacePage> {
   void _savePlace() {
     final enteredTitle = _titleController.text;
 
-    if (enteredTitle.isEmpty) {
+    if (enteredTitle.isEmpty || _pickedImage == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('U can\'t add empty title of place!'),
@@ -66,7 +69,14 @@ class _AddPlacePageState extends ConsumerState<AddPlacePage> {
       return;
     }
 
-    ref.read(userPlacesProvider.notifier).addPlace(enteredTitle);
+    ref.read(userPlacesProvider.notifier).addPlace(
+          enteredTitle,
+          _pickedImage!,
+        );
     Navigator.of(context).pop();
+  }
+
+  void onPickImage(File image) {
+    _pickedImage = image;
   }
 }

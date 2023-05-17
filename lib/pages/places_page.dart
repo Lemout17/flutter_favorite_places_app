@@ -22,7 +22,10 @@ class PlacesPage extends ConsumerWidget {
           ),
         ],
       ),
-      body: PlacesList(placesList: userPlaces),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: PlacesList(placesList: userPlaces),
+      ),
     );
   }
 

@@ -24,8 +24,4 @@ class AppTheme {
       ),
     ),
   );
-
-  static ThemeData get theme => mainTheme;
 }
-
-AppTheme appTheme = AppTheme();

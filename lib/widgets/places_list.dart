@@ -22,8 +22,10 @@ class PlacesList extends StatelessWidget {
     }
 
     return ListView.builder(
-      itemBuilder: (context, index) =>
-          PlacesItem(title: placesList[index].title),
+      itemBuilder: (context, index) => PlacesItem(
+        title: placesList[index].title,
+        place: placesList[index],
+      ),
       itemCount: placesList.length,
     );
   }

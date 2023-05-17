@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_favorite_places_app/providers/user_places.dart';
+import 'package:flutter_favorite_places_app/widgets/image_input.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class AddPlacePage extends StatefulWidget {
+class AddPlacePage extends ConsumerStatefulWidget {
   const AddPlacePage({super.key});
 
   @override
-  State<AddPlacePage> createState() => _AddPlacePageState();
+  ConsumerState<AddPlacePage> createState() => _AddPlacePageState();
 }
 
-class _AddPlacePageState extends State<AddPlacePage> {
+class _AddPlacePageState extends ConsumerState<AddPlacePage> {
   final _titleController = TextEditingController();
 
   @override
@@ -34,10 +37,14 @@ class _AddPlacePageState extends State<AddPlacePage> {
               style: TextStyle(color: theme.colorScheme.onBackground),
             ),
             const SizedBox(
+              height: 10,
+            ),
+            const ImageInput(),
+            const SizedBox(
               height: 16,
             ),
             ElevatedButton.icon(
-              onPressed: () {},
+              onPressed: _savePlace,
               label: const Text('Save place'),
               icon: const Icon(Icons.add),
             )
@@ -45,5 +52,21 @@ class _AddPlacePageState extends State<AddPlacePage> {
         ),
       ),
     );
+  }
+
+  void _savePlace() {
+    final enteredTitle = _titleController.text;
+
+    if (enteredTitle.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('U can\'t add empty title of place!'),
+        ),
+      );
+      return;
+    }
+
+    ref.read(userPlacesProvider.notifier).addPlace(enteredTitle);
+    Navigator.of(context).pop();
   }
 }

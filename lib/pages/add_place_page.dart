@@ -67,7 +67,9 @@ class _AddPlacePageState extends ConsumerState<AddPlacePage> {
   void _savePlace() {
     final enteredTitle = _titleController.text;
 
-    if (enteredTitle.isEmpty || _pickedImage == null) {
+    if (enteredTitle.isEmpty ||
+        _pickedImage == null ||
+        _pickedLocation == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('U can\'t add empty title of place!'),

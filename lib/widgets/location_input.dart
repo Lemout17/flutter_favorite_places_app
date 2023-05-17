@@ -14,6 +14,7 @@ class LocationInput extends StatefulWidget {
 class _LocationInputState extends State<LocationInput> {
   PlaceLocation? _pickedLocation;
   bool _isGettingLocation = false;
+  String? _locationImage;
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +27,15 @@ class _LocationInputState extends State<LocationInput> {
         color: theme.colorScheme.onBackground,
       ),
     );
+
+    if (_locationImage != null) {
+      previewContent = Image.network(
+        _locationImage!,
+        fit: BoxFit.cover,
+        width: double.infinity,
+        height: double.infinity,
+      );
+    }
 
     if (_isGettingLocation) {
       previewContent = const CircularProgressIndicator();
@@ -109,5 +119,18 @@ class _LocationInputState extends State<LocationInput> {
     });
 
     widget.onPickLocation(_pickedLocation!);
+
+    if (_pickedLocation != null) {
+      ApiService()
+          .getLocationImage(
+        _pickedLocation!.latitude,
+        _pickedLocation!.longitude,
+      )
+          .then((result) {
+        setState(() {
+          _locationImage = result;
+        });
+      });
+    }
   }
 }
